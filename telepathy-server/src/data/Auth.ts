@@ -29,7 +29,7 @@ export class Auth {
     try {
       const info = jwt.verify(token, config.JWT_KEY);
       return { authenticated: true, info };
-    } catch (err) {
+    } catch {
       return {
         authenticated: false,
       };
@@ -42,7 +42,7 @@ export class Auth {
       try {
         jwt.verify(req.headers.authorization.split(" ")[1], config.JWT_KEY);
         authenticated = true;
-      } catch (err) {
+      } catch {
         authenticated = false;
       }
     }

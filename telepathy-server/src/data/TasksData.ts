@@ -47,7 +47,7 @@ export class TasksData {
     span.end();
   }
 
-  public async list(context: Span): Promise<Task[]> {
+  public async list(_context: Span): Promise<Task[]> {
     return _.cloneDeep(this.tasks);
   }
 
