@@ -27,7 +27,7 @@ export class UsersData {
     );
   }
 
-  public async list(context: Span): Promise<User[]> {
+  public async list(_context: Span): Promise<User[]> {
     return _.cloneDeep(this.users);
   }
 

@@ -48,7 +48,7 @@ export class TaskExecutionsData {
     span.end();
   }
 
-  public async list(context: Span): Promise<TaskExecution[]> {
+  public async list(_context: Span): Promise<TaskExecution[]> {
     return this.taskExecutions;
   }
 

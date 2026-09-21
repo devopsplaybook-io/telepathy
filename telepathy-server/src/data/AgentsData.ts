@@ -24,7 +24,7 @@ export class AgentsData {
     }) as Agent;
   }
 
-  public async list(context: Span): Promise<Agent[]> {
+  public async list(_context: Span): Promise<Agent[]> {
     return _.cloneDeep(this.agents);
   }
 
