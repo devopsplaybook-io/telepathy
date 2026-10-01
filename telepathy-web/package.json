@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@picocss/pico": "^2.0.6",
-    "@pinia/nuxt": "^0.5.3",
+    "@pinia/nuxt": "^0.5.5",
     "@vueuse/core": "^10.11.1",
     "axios": "^1.7.3",
     "bootstrap-icons": "^1.11.3",
