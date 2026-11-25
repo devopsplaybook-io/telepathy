@@ -1,3 +1,4 @@
+import { AuthSessionPolicyLog } from "@devopsplaybook.io/common-utils";
 import { StandardMeter, StandardTracer } from "@devopsplaybook.io/otel-utils";
 import { StandardTracerFastifyRegisterHooks } from "@devopsplaybook.io/otel-utils-fastify";
 import fastifyCors from "@fastify/cors";
@@ -33,6 +34,10 @@ Promise.resolve().then(async () => {
   //
   const config = new Config();
   await config.reload();
+  AuthSessionPolicyLog(config, {
+    app: "telepathy",
+    logger: (message: string) => logger.info(message),
+  });
   watchFile(config.CONFIG_FILE, () => {
     logger.info(`Config updated: ${config.CONFIG_FILE}`);
     config.reload();
