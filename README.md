@@ -49,13 +49,18 @@ config.json:
   "DATA_DIR": "/data",                  // Directory where data are saved. Default: /data
   "AGENT_KEY": "TO_CHANGE",             // Key needed for Agents to connect to Server
   "JWT_KEY": "TO_CHANGE",               // Key used to encode JWT tokens. Default: random
-  "JWT_VALIDITY_DURATION": 8035200,     // Validity duration (in seconds) of the JWT token. Default: 8035200 (93 days)
+  "JWT_VALIDITY_DURATION": 2592000,     // Sliding validity (in seconds) of the JWT token. Default: 2592000 (30 days)
+  "JWT_SESSION_MAX_DURATION": 7776000,  // Absolute cap (in seconds) of the session. Default: 7776000 (90 days)
   "TASK_HISTORY_MAX_COUNT": 100,        // Maximum number of executions kept. Default: 100
   "TASK_HISTORY_MAX_AGE_DAYS": 30,      // Maximum age (in days) of executions kept. Default: 30
   "AGENT_REGISTRATION_DURATION": 1800,  // Duration (in seconds) that agents are considered connected. Default: 1800 (30 min)
   "LOG_LEVEL": "info"                   // Log level: info or debug. Default: info
 }
 ```
+
+Sessions follow the standard policy documented in [`common-utils`](https://github.com/devopsplaybook-io/common-utils/blob/main/docs/auth-session-policy.md): `JWT_VALIDITY_DURATION` is a sliding validity renewed while the user is active and `JWT_SESSION_MAX_DURATION` is the absolute cap after which a new login is required. Both are declared with `addConfigField` so a value from `config.json` or the environment survives a reload. The server logs the effective values and validates them with `AuthSessionPolicyLog(config, { app: "telepathy", ... })` at startup; the unit tests fail if the values drift from the policy document.
+
+> **Pitfall:** on `@devopsplaybook.io/common-utils` <= 2.9.2, a subclass field override is silently discarded on `reload()` unless the field is also declared with `this.addConfigField({ field: "..." })`. This app requires `^2.11.0`.
 
 ### Agent
 

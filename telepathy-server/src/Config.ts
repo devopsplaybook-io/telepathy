@@ -16,6 +16,13 @@ export class Config extends ConfigBase {
   // Previous configuration key, still accepted so existing deployments keep
   // exporting traces after the upgrade.
   public OPENTELEMETRY_COLLECTOR_HTTP = "";
+  // Session policy: a token lives 30 days and the absolute session (from the
+  // first login) is capped at 90 days. Both fields are inherited from
+  // ConfigBase; they are re-declared here and re-registered below so the
+  // values also survive a common-utils downgrade (whose ConfigBase captured
+  // its own default in the base constructor).
+  public JWT_VALIDITY_DURATION = 2592000;
+  public JWT_SESSION_MAX_DURATION = 7776000;
 
   constructor() {
     super("telepathy-server", process.env.TELEPATHY_CONFIG || process.env.CONFIG_FILE);
@@ -36,6 +43,8 @@ export class Config extends ConfigBase {
     this.addConfigField({ field: "FILE_REDUNDANCY" });
     this.addConfigField({ field: "AGENT_KEY", sensitive: true });
     this.addConfigField({ field: "OPENTELEMETRY_COLLECTOR_HTTP" });
+    this.addConfigField({ field: "JWT_VALIDITY_DURATION" });
+    this.addConfigField({ field: "JWT_SESSION_MAX_DURATION" });
   }
 
   public async reload(): Promise<void> {
