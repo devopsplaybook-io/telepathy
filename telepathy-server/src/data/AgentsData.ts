@@ -1,4 +1,4 @@
-import type { Span } from "@opentelemetry/sdk-trace-base";
+import type { Span } from "@opentelemetry/api";
 import * as _ from "lodash";
 import { Agent } from "../common-model/Agent";
 import { Config } from "../Config";

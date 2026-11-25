@@ -1,4 +1,4 @@
-import type { Span } from "@opentelemetry/sdk-trace-base";
+import type { Span } from "@opentelemetry/api";
 import * as cron from "node-cron";
 import { TaskExecutionsData } from "../data/TaskExecutionsData";
 import { TasksData } from "../data/TasksData";

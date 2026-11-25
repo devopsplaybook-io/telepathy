@@ -1,4 +1,4 @@
-import type { Span } from "@opentelemetry/sdk-trace-base";
+import type { Span } from "@opentelemetry/api";
 import * as fs from "fs-extra";
 import { Config } from "../Config";
 import { OTelLogger, OTelTracer } from "../OTelContext";
