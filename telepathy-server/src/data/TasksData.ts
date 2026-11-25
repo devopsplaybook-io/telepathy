@@ -1,4 +1,4 @@
-import type { Span } from "@opentelemetry/sdk-trace-base";
+import type { Span } from "@opentelemetry/api";
 import * as _ from "lodash";
 import { Task } from "../common-model/Task";
 import { OTelTracer } from "../OTelContext";

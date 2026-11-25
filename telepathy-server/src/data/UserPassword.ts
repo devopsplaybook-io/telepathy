@@ -1,4 +1,4 @@
-import { Span } from "@opentelemetry/sdk-trace-base";
+import type { Span } from "@opentelemetry/api";
 import * as bcrypt from "bcrypt";
 import { User } from "../common-model/User";
 

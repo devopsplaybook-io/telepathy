@@ -1,0 +1,76 @@
+import * as fs from "fs-extra";
+import * as os from "os";
+import * as path from "path";
+import { Config } from "./Config";
+
+const ENV_KEYS = [
+  "JWT_VALIDITY_DURATION",
+  "JWT_SESSION_MAX_DURATION",
+  "CONFIG_FILE",
+  "TELEPATHY_CONFIG",
+] as const;
+
+describe("Config JWT session durations", () => {
+  const originalEnv: Record<string, string | undefined> = {};
+  let tempDir: string;
+
+  beforeEach(() => {
+    for (const key of ENV_KEYS) {
+      originalEnv[key] = process.env[key];
+      Reflect.deleteProperty(process.env, key);
+    }
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "telepathy-config-"));
+  });
+
+  afterEach(() => {
+    for (const key of ENV_KEYS) {
+      if (originalEnv[key] === undefined) {
+        Reflect.deleteProperty(process.env, key);
+      } else {
+        process.env[key] = originalEnv[key];
+      }
+    }
+    fs.removeSync(tempDir);
+  });
+
+  function configFile(content: Record<string, unknown>): string {
+    const file = path.join(tempDir, "config.json");
+    fs.writeFileSync(file, JSON.stringify(content));
+    return file;
+  }
+
+  it("loads the explicit 30-day validity and 90-day cap from the config file", async () => {
+    process.env.CONFIG_FILE = configFile({
+      DATA_DIR: tempDir,
+      JWT_VALIDITY_DURATION: 2592000,
+      JWT_SESSION_MAX_DURATION: 7776000,
+    });
+    const config = new Config();
+    await config.reload();
+    expect(config.JWT_VALIDITY_DURATION).toBe(2592000);
+    expect(config.JWT_SESSION_MAX_DURATION).toBe(7776000);
+  });
+
+  it("coerces string environment overrides to numbers", async () => {
+    process.env.CONFIG_FILE = configFile({
+      DATA_DIR: tempDir,
+      JWT_VALIDITY_DURATION: 2592000,
+      JWT_SESSION_MAX_DURATION: 7776000,
+    });
+    process.env.JWT_VALIDITY_DURATION = "3600";
+    process.env.JWT_SESSION_MAX_DURATION = "7200";
+    const config = new Config();
+    await config.reload();
+    expect(config.JWT_VALIDITY_DURATION).toBe(3600);
+    expect(config.JWT_SESSION_MAX_DURATION).toBe(7200);
+  });
+
+  it("ships explicit durations in the docker config without a fixed JWT key", () => {
+    const dockerConfig = fs.readJSONSync(
+      path.resolve(__dirname, "../../config-docker/config-server.json")
+    );
+    expect(dockerConfig.JWT_VALIDITY_DURATION).toBe(2592000);
+    expect(dockerConfig.JWT_SESSION_MAX_DURATION).toBe(7776000);
+    expect(dockerConfig.JWT_KEY).toBe("TO_CHANGE");
+  });
+});

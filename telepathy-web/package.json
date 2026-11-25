@@ -7,11 +7,13 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "echo TODO",
-    "test": "echo TODO"
+    "test": "vitest run"
   },
   "devDependencies": {
     "@vite-pwa/nuxt": "^0.9.1",
-    "nuxt": "3.12.4"
+    "happy-dom": "^17.6.3",
+    "nuxt": "3.12.4",
+    "vitest": "^3.2.4"
   },
   "dependencies": {
     "@picocss/pico": "^2.0.6",
