@@ -107,6 +107,8 @@ Images are available on Docker Hub:
 
 The agent image is available in two variants: Alpine (`latest`) and Ubuntu (`<version>-ubuntu`).
 
+The `main` build (`_dev/docker-build-images.sh`, run by the Main Build workflow) publishes `latest`, `<version>`, `<major>`, `<minor>` and `beta` for both images. `_dev/docker-build-images-beta.sh` publishes `beta` alone and is meant for building a different branch. The production deployment tracks `beta` (see [GitOps](https://github.com/devopsplaybook-io/GitOps/blob/main/clusters/homelab-apps/telepathy/kustomization.yaml)), so the tag must stay current on every merge; the new image is picked up by a rollout restart of the deployment (`imagePullPolicy: Always`).
+
 Example of Kubernetes configuration:
 
 [Kubernetes Example](docs/example_kubernetes)
