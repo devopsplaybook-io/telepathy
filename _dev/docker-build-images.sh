@@ -15,11 +15,16 @@ SERVICE_VERSION_MINOR=$(cat ${REPO_DIR}/package.json | grep \"version\" | cut -f
 
 echo "Building ${SERVICE_NAME}/${SERVICE_VERSION}"
 
+# The production deployments in devopsplaybook-io/GitOps pull
+# devopsplaybookio/telepathy:beta and telepathy-agent:beta, so the main build
+# must publish that tag too: without it a merged change never reaches the
+# cluster (the tag kept serving the last manually built 2.2.0 image).
 docker buildx build \
   --platform linux/arm64/v8,linux/amd64 \
    --push \
   -f Dockerfile-server \
   -t ${DOCKER_HUB_USERNAME}/${SERVICE_NAME}:latest \
+  -t ${DOCKER_HUB_USERNAME}/${SERVICE_NAME}:beta \
   -t ${DOCKER_HUB_USERNAME}/${SERVICE_NAME}:${SERVICE_VERSION} \
   -t ${DOCKER_HUB_USERNAME}/${SERVICE_NAME}:${SERVICE_VERSION_MAJOR} \
   -t ${DOCKER_HUB_USERNAME}/${SERVICE_NAME}:${SERVICE_VERSION_MINOR} \
@@ -30,6 +35,7 @@ docker buildx build \
    --push \
   -f Dockerfile-agent-alpine \
   -t ${DOCKER_HUB_USERNAME}/${SERVICE_NAME}-agent:latest \
+  -t ${DOCKER_HUB_USERNAME}/${SERVICE_NAME}-agent:beta \
   -t ${DOCKER_HUB_USERNAME}/${SERVICE_NAME}-agent:${SERVICE_VERSION} \
   -t ${DOCKER_HUB_USERNAME}/${SERVICE_NAME}-agent:${SERVICE_VERSION_MAJOR} \
   -t ${DOCKER_HUB_USERNAME}/${SERVICE_NAME}-agent:${SERVICE_VERSION_MINOR} \
