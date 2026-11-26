@@ -11,11 +11,14 @@
   },
   "devDependencies": {
     "@vite-pwa/nuxt": "^0.9.1",
+    "@vitejs/plugin-vue": "^5.1.2",
+    "@vue/test-utils": "^2.5.1",
     "happy-dom": "^17.6.3",
     "nuxt": "3.12.4",
     "vitest": "^3.2.4"
   },
   "dependencies": {
+    "@devopsplaybook.io/common-web": "^0.16.0",
     "@picocss/pico": "^2.0.6",
     "@pinia/nuxt": "^0.5.3",
     "@vueuse/core": "^10.11.1",

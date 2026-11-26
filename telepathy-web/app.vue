@@ -10,11 +10,20 @@
       </div>
     </div>
     <div class="alert-messages"><AlertMessages /></div>
+    <div class="app-update-bar"><AppUpdatePrompt /></div>
   </div>
 </template>
 
 <style>
 /* Layout */
+
+.app-update-bar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+}
 
 #page_container {
   width: auto;
