@@ -17,6 +17,7 @@ import { Scheduler } from "./process/Scheduler";
 import { TaskCleanup } from "./process/TaskCleanup";
 import { AgentIdRoutes } from "./routes/AgentIdRoutes";
 import { AgentsRoutes } from "./routes/AgentsRoutes";
+import { LoginCodesFeature } from "./routes/LoginCodes";
 import { TaskIdRoutes } from "./routes/TaskIdRoutes";
 import { TasksExecutionIdRoutes } from "./routes/TasksExecutionIdRoutes";
 import { TasksExecutionsForAgentsRoutes } from "./routes/TasksExecutionsForAgentsRoutes";
@@ -108,6 +109,9 @@ Promise.resolve().then(async () => {
   fastify.register(new TasksWebhooksRoutes(tasksData, taskExecutionsData).getRoutes, { prefix: "/api/tasks/webhooks" });
   fastify.register(new UserRoutes(usersData).getRoutes, { prefix: "/api/users" });
   fastify.register(new UserIdRoutes(usersData).getRoutes, { prefix: "/api/users/:userId" });
+  fastify.register(LoginCodesFeature(config, usersData), {
+    prefix: "/api/users/login-codes",
+  });
 
   fastify.listen({ port: config.API_PORT, host: "0.0.0.0" }, (err) => {
     if (err) {

@@ -1,2 +1,19 @@
 @import "@picocss/pico/css/pico.min.css";
 @import "bootstrap-icons/font/bootstrap-icons.css";
+
+/* Shared component tokens (common-web login-code cards) mapped onto Pico.
+   Pico redefines its --pico-* values per color scheme at a higher specificity,
+   so these resolve to the current light or dark palette automatically. */
+:root {
+  --color-surface: var(--pico-card-background-color);
+  --color-surface-raised: var(--pico-card-sectioning-background-color);
+  --color-text: var(--pico-color);
+  --color-text-muted: var(--pico-muted-color);
+  --color-border: var(--pico-card-border-color);
+  --color-primary: var(--pico-primary-background);
+  --color-primary-hover: var(--pico-primary-hover-background);
+  --color-on-primary: var(--pico-primary-inverse);
+  --color-error: var(--pico-del-color);
+  --color-success: var(--pico-ins-color);
+  --color-warning: var(--pico-del-color);
+}

@@ -13,6 +13,7 @@ const ENV_KEYS = [
   "JWT_SESSION_MAX_DURATION",
   "CONFIG_FILE",
   "TELEPATHY_CONFIG",
+  "LOGIN_CODE_ENABLED",
 ] as const;
 
 describe("Config JWT session durations", () => {
@@ -123,6 +124,17 @@ describe("Config JWT session durations", () => {
     expect(lines).toContain(
       "Auth session policy error: JWT_VALIDITY_DURATION 60s is below the 3600s minimum; declare an explicit exception for a deliberately short session",
     );
+  });
+
+  it("keeps login-with-code disabled by default and coerces the env flag", async () => {
+    process.env.CONFIG_FILE = configFile({ DATA_DIR: tempDir });
+    const config = new Config();
+    await config.reload();
+    expect(config.LOGIN_CODE_ENABLED).toBe(false);
+
+    process.env.LOGIN_CODE_ENABLED = "true";
+    await config.reload();
+    expect(config.LOGIN_CODE_ENABLED).toBe(true);
   });
 
   it("ships explicit durations in the docker config without a fixed JWT key", () => {
